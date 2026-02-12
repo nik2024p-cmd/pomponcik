@@ -71,7 +71,7 @@
       transition: background 0.2s, border 0.2s, box-shadow 0.2s;
     }
 
-    /* ----- АВАТАР С GITHUB ----- */
+    /* ----- АВАТАР ----- */
     .avatar {
       width: clamp(100px, 28vw, 120px);
       height: clamp(100px, 28vw, 120px);
@@ -318,10 +318,9 @@
 
   <div class="card" id="mainCard">
 
-    <!-- ✅ АВАТАРКА С GITHUB ✅ -->
-    <!-- 1. Загрузи файл avatar.jpg в ту же папку на GitHub -->
-    <!-- 2. Код сам её подхватит -->
-    <img class="avatar" id="avatarImg" src="avatar.jpg" alt="Помпончик" loading="lazy" width="120" height="120" onerror="this.src='https://i.postimg.cc/yYqgrPp8/f6a5a0b0a27d33ffd335a6576aaaad9a.jpg'">
+    <!-- 🔥 АВАТАРКА С GITHUB 🔥 -->
+    <!-- Автоматическая загрузка avatar.jpg из корня репозитория -->
+    <img class="avatar" id="avatarImg" src="avatar.jpg" alt="Помпончик" loading="lazy" width="120" height="120" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22100%22%20r%3D%22100%22%20fill%3D%22%23b266ff%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-size%3D%2280%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20fill%3D%22white%22%3E%F0%9F%90%B6%3C%2Ftext%3E%3C%2Fsvg%3E';">
 
     <div class="display-name">Помпончик</div>
 
@@ -548,6 +547,33 @@
       if (!('ontouchstart' in window) && navigator.maxTouchPoints <= 0) {
         document.querySelector('input[name="device"][value="pc"]').checked = true;
       }
+      
+      // Добавляем обработчик для загрузки аватарки из GitHub репозитория
+      const avatarImg = document.getElementById('avatarImg');
+      
+      // Пробуем загрузить avatar.jpg из корня репозитория GitHub
+      function loadGitHubAvatar() {
+        // Определяем URL репозитория (если страница на GitHub Pages)
+        const githubUrl = 'avatar.jpg';
+        
+        // Создаем тестовое изображение
+        const testImg = new Image();
+        testImg.src = githubUrl + '?v=' + Date.now(); // Кэш-бастер
+        
+        testImg.onload = function() {
+          avatarImg.src = testImg.src;
+          console.log('Аватарка загружена с GitHub');
+        };
+        
+        testImg.onerror = function() {
+          console.log('Не удалось загрузить avatar.jpg, используется заглушка');
+          // Заглушка уже установлена через onerror в img
+        };
+      }
+      
+      // Загружаем аватарку
+      loadGitHubAvatar();
+      
     })();
   </script>
 
